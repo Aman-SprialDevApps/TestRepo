@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+group = "com.snappy"
+version = "1.0.0"
+
+android {
+    namespace 'com.snappy.testmodule'
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 21
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+publishing {
+    publications {
+        register("release", MavenPublication) {
+            groupId = project.group
+            artifactId = "testmodule"
+            version = project.version
+
+            afterEvaluate {
+                from components.findByName("release")
+            }
+        }
+    }
+}
